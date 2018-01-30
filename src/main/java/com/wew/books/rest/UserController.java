@@ -1,7 +1,9 @@
 package com.wew.books.rest;
 
 import com.wew.books.repository.UserRepository;
+import com.wew.books.repository.entities.Book;
 import com.wew.books.repository.entities.User;
+import com.wew.books.rest.resources.BookResource;
 import com.wew.books.rest.resources.UserResource;
 import ma.glasnost.orika.MapperFacade;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -64,5 +66,13 @@ public class UserController {
         User newUser = mapperFacade.map(userResource, User.class);
         //TODO: change user
         return ResponseEntity.ok(userResource);
+    }
+
+    @RequestMapping(method = RequestMethod.DELETE, path = "/books/{isbn}")
+    public ResponseEntity<UserResource> deleteBookById(@PathVariable int userId) {
+        User user = userRepository.findOne(userId);
+        userRepository.delete(userId);
+        UserResource resource = mapperFacade.map(user, UserResource.class);
+        return ResponseEntity.ok(resource);
     }
 }

@@ -65,4 +65,12 @@ public class BooksController {
         //TODO: change user
         return ResponseEntity.ok(bookResource);
     }
+
+    @RequestMapping(method = RequestMethod.DELETE, path = "/books/{isbn}")
+    public ResponseEntity<BookResource> deleteBookById(@PathVariable String isbn) {
+        Book book = bookRepository.findOne(isbn);
+        bookRepository.delete(isbn);
+        BookResource resource = mapperFacade.map(book, BookResource.class);
+        return ResponseEntity.ok(resource);
+    }
 }
