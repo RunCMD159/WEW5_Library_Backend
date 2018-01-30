@@ -7,7 +7,8 @@ import javax.persistence.Id;
 public class User {
     @Id
     private int userId;
-    private String name;
+    private String firstname;
+    private String lastname;
     private String email;
     private String password;
     private String bitcoinWalletPrivateKey;
@@ -20,12 +21,20 @@ public class User {
         this.userId = userId;
     }
 
-    public String getName() {
-        return name;
+    public String getFirstname() {
+        return firstname;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setFirstname(String firstname) {
+        this.firstname = firstname;
+    }
+
+    public String getLastname() {
+        return lastname;
+    }
+
+    public void setLastname(String lastname) {
+        this.lastname = lastname;
     }
 
     public String getEmail() {

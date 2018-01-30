@@ -8,8 +8,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.PostConstruct;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 public class UserController {
@@ -18,6 +20,20 @@ public class UserController {
     private MapperFacade mapperFacade;
     @Autowired
     private UserRepository userRepository;
+
+    @PostConstruct
+    private void addUsers() {
+        for (int i = 0; i < 51; i++) {
+            User user = new User();
+            user.setUserId(i);
+            user.setFirstname("Firstname" + i);
+            user.setLastname("Lastname" + i);
+            user.setEmail("User@user" + i + ".com");
+            user.setPassword("1234567" + i);
+            user.setBitcoinWalletPrivateKey(UUID.randomUUID().toString());
+            userRepository.save(user);
+        }
+    }
 
     @RequestMapping(method = RequestMethod.GET, path = "/users")
     public ResponseEntity<List<UserResource>> getAllUsers() {

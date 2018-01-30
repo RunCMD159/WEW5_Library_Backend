@@ -8,8 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.List;
+import javax.annotation.PostConstruct;
+import java.util.*;
 
 @RestController
 public class BooksController {
@@ -18,6 +18,22 @@ public class BooksController {
     private MapperFacade mapperFacade;
     @Autowired
     private BookRepository bookRepository;
+
+    @PostConstruct
+    private void addBooks() {
+        Random random = new Random();
+        for (int i = 0; i < 51; i++) {
+            Book book = new Book();
+            book.setIsbn(UUID.randomUUID().toString());
+            book.setAuthors("Author" + i);
+            book.setPages(random.nextInt(1000));
+            if (random.nextInt(2) == 1) {
+                book.setReturnDate(new Date().toString());
+            }
+            book.setTitle("Book" + i);
+            bookRepository.save(book);
+        }
+    }
 
     @RequestMapping(method = RequestMethod.GET, path = "/books")
     public ResponseEntity<List<BookResource>> getAllBooks() {
