@@ -24,9 +24,11 @@ repositories {
 
 
 dependencies {
+	compile 'net.rakugakibox.spring.boot:orika-spring-boot-starter:1.1.0'
 	compile('org.springframework.boot:spring-boot-starter-actuator')
 	compile('org.springframework.boot:spring-boot-starter-security')
 	compile('org.springframework.boot:spring-boot-starter-web')
+	compile("org.springframework.boot:spring-boot-starter-data-jpa")
 	runtime('com.h2database:h2')
 	testCompile('org.springframework.boot:spring-boot-starter-test')
 	testCompile('org.springframework.security:spring-security-test')
