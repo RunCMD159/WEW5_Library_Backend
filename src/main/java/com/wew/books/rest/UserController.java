@@ -1,7 +1,8 @@
-package com.wew.books.rest.resources;
+package com.wew.books.rest;
 
+import com.wew.books.repository.UserRepository;
 import com.wew.books.repository.entities.User;
-import com.wew.books.repository.entities.UserRepository;
+import com.wew.books.rest.resources.UserResource;
 import ma.glasnost.orika.MapperFacade;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -27,7 +28,7 @@ public class UserController {
     }
 
     @RequestMapping(method = RequestMethod.GET, path = "/users/{userId}")
-    public ResponseEntity<UserResource> getUserById(@PathVariable String userId) {
+    public ResponseEntity<UserResource> getUserById(@PathVariable int userId) {
         User user = userRepository.findOne(userId);
         UserResource userResource = mapperFacade.map(user, UserResource.class);
         return ResponseEntity.ok(userResource);
@@ -41,7 +42,7 @@ public class UserController {
     }
 
     @RequestMapping(method = RequestMethod.PUT, path = "/users/{userId}")
-    public ResponseEntity<UserResource> getUserById(@PathVariable String userId,
+    public ResponseEntity<UserResource> getUserById(@PathVariable int userId,
                                                     @RequestBody UserResource userResource) {
         User user = userRepository.findOne(userId);
         User newUser = mapperFacade.map(userResource, User.class);
