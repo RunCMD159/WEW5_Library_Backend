@@ -68,8 +68,8 @@ public class UserController {
         return ResponseEntity.ok(userResource);
     }
 
-    @RequestMapping(method = RequestMethod.DELETE, path = "/books/{isbn}")
-    public ResponseEntity<UserResource> deleteBookById(@PathVariable int userId) {
+    @RequestMapping(method = RequestMethod.DELETE, path = "/users/{isbn}")
+    public ResponseEntity<UserResource> deleteUserById(@PathVariable int userId) {
         User user = userRepository.findOne(userId);
         userRepository.delete(userId);
         UserResource resource = mapperFacade.map(user, UserResource.class);
