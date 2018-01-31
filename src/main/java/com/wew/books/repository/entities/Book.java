@@ -8,7 +8,7 @@ public class Book {
     @Id
     private String isbn;
     private String title;
-    private String authors;
+    private String author;
     private int pages;
     private String returnDate;
 
@@ -28,12 +28,12 @@ public class Book {
         this.title = title;
     }
 
-    public String getAuthors() {
-        return authors;
+    public String getAuthor() {
+        return author;
     }
 
-    public void setAuthors(String authors) {
-        this.authors = authors;
+    public void setAuthor(String author) {
+        this.author = author;
     }
 
     public int getPages() {

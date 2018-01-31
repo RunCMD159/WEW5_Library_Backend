@@ -25,7 +25,7 @@ public class BooksController {
         for (int i = 0; i < 51; i++) {
             Book book = new Book();
             book.setIsbn(UUID.randomUUID().toString());
-            book.setAuthors("Author" + i);
+            book.setAuthor("Author" + i);
             book.setPages(random.nextInt(1000));
             if (random.nextInt(2) == 1) {
                 book.setReturnDate(new Date().toString());
@@ -44,21 +44,21 @@ public class BooksController {
     }
 
     @RequestMapping(method = RequestMethod.GET, path = "/books/{isbn}")
-    public ResponseEntity<BookResource> getUserById(@PathVariable String isbn) {
+    public ResponseEntity<BookResource> getBookByIsbn(@PathVariable String isbn) {
         Book book = bookRepository.findOne(isbn);
         BookResource bookResource = mapperFacade.map(book, BookResource.class);
         return ResponseEntity.ok(bookResource);
     }
 
     @RequestMapping(method = RequestMethod.POST, path = "/books")
-    public ResponseEntity<BookResource> getUserById(@RequestBody BookResource bookResource) {
+    public ResponseEntity<BookResource> createNewBook(@RequestBody BookResource bookResource) {
         Book book = mapperFacade.map(bookResource, Book.class);
         bookRepository.save(book);
         return ResponseEntity.ok(bookResource);
     }
 
     @RequestMapping(method = RequestMethod.PUT, path = "/books/{isbn}")
-    public ResponseEntity<BookResource> getUserById(@PathVariable String isbn,
+    public ResponseEntity<BookResource> changeBook(@PathVariable String isbn,
                                                     @RequestBody BookResource bookResource) {
         Book book = bookRepository.findOne(isbn);
         Book newBook = mapperFacade.map(bookResource, Book.class);
