@@ -65,6 +65,7 @@ public class UserController {
 
     @RequestMapping(method = RequestMethod.POST, path = "/users")
     public ResponseEntity<UserResource> createNewUser(@RequestBody UserResource userResource) {
+        System.out.println(userResource.toString());
         User user = mapperFacade.map(userResource, User.class);
         User dbUser = userRepository.findByEmail(userResource.getEmail());
         if (dbUser != null) {
@@ -87,9 +88,14 @@ public class UserController {
     @RequestMapping(method = RequestMethod.PUT, path = "/users/{userId}")
     public ResponseEntity<UserResource> changeUserById(@PathVariable int userId,
                                                        @RequestBody UserResource userResource) {
-        User user = userRepository.findOne(userId);
-        User newUser = mapperFacade.map(userResource, User.class);
-        //TODO: change user
+        User usertToUpdate = userRepository.findOne(userId);
+         usertToUpdate.setBitcoinWalletPrivateKey(userResource.getBitcoinWalletPrivateKey());
+         usertToUpdate.setEmail(userResource.getEmail());
+         usertToUpdate.setFirstname(userResource.getEmail());
+         usertToUpdate.setLastname(userResource.getLastname());
+         usertToUpdate.setPassword(userResource.getPassword());
+         usertToUpdate.setRole(userResource.getRole());                                                 
+        userRepository.save(usertToUpdate);
         return ResponseEntity.ok(userResource);
     }
 

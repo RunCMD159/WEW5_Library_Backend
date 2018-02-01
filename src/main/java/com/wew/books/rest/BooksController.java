@@ -63,9 +63,8 @@ public class BooksController {
     @RequestMapping(method = RequestMethod.PUT, path = "/books/{isbn}")
     public ResponseEntity<BookResource> changeBook(@PathVariable String isbn,
                                                    @RequestBody BookResource bookResource) {
-        Book book = bookRepository.findOne(isbn);
         Book newBook = mapperFacade.map(bookResource, Book.class);
-        //TODO: change user
+        bookRepository.save(newBook);
         return ResponseEntity.ok(bookResource);
     }
 
