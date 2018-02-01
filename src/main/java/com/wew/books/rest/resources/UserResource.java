@@ -7,6 +7,7 @@ public class UserResource {
     private String email;
     private String password;
     private String bitcoinWalletPrivateKey;
+    private String role;
 
     public int getUserId() {
         return userId;
@@ -54,5 +55,13 @@ public class UserResource {
 
     public void setBitcoinWalletPrivateKey(String bitcoinWalletPrivateKey) {
         this.bitcoinWalletPrivateKey = bitcoinWalletPrivateKey;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
     }
 }

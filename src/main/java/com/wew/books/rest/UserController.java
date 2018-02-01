@@ -1,9 +1,8 @@
 package com.wew.books.rest;
 
 import com.wew.books.repository.UserRepository;
-import com.wew.books.repository.entities.Book;
 import com.wew.books.repository.entities.User;
-import com.wew.books.rest.resources.BookResource;
+import com.wew.books.rest.resources.LoginResource;
 import com.wew.books.rest.resources.UserResource;
 import ma.glasnost.orika.MapperFacade;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +13,9 @@ import javax.annotation.PostConstruct;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+
+import static com.wew.books.UserRoles.ADMIN;
+import static com.wew.books.UserRoles.NORMAL;
 
 @RestController
 public class UserController {
@@ -33,8 +35,18 @@ public class UserController {
             user.setEmail("User@user" + i + ".com");
             user.setPassword("1234567" + i);
             user.setBitcoinWalletPrivateKey(UUID.randomUUID().toString());
+            user.setRole(NORMAL.name());
             userRepository.save(user);
         }
+        User user = new User();
+        user.setUserId(-1);
+        user.setFirstname("admin");
+        user.setLastname("admin");
+        user.setEmail("admin@admin.com");
+        user.setPassword("admin1234");
+        user.setRole(ADMIN.name());
+        user.setBitcoinWalletPrivateKey(UUID.randomUUID().toString());
+        userRepository.save(user);
     }
 
     @RequestMapping(method = RequestMethod.GET, path = "/users")
@@ -53,15 +65,29 @@ public class UserController {
     }
 
     @RequestMapping(method = RequestMethod.POST, path = "/users")
-    public ResponseEntity<UserResource> getUserById(@RequestBody UserResource userResource) {
+    public ResponseEntity<UserResource> createNewUser(@RequestBody UserResource userResource) {
         User user = mapperFacade.map(userResource, User.class);
+        User dbUser = userRepository.findByEmail(userResource.getEmail());
+        if (dbUser != null) {
+            throw new RuntimeException("Email already in use");
+        }
         userRepository.save(user);
         return ResponseEntity.ok(userResource);
     }
 
+    @RequestMapping(method = RequestMethod.POST, path = "/users/login")
+    public ResponseEntity<UserResource> loginUser(@RequestBody LoginResource loginResource) {
+        User user = userRepository.findUserByEmailAndPassword(loginResource.getEmail(), loginResource.getPassword());
+        if (user == null) {
+            throw new RuntimeException("User could not be found");
+        }
+        UserResource userResource = mapperFacade.map(user, UserResource.class);
+        return ResponseEntity.ok(userResource);
+    }
+
     @RequestMapping(method = RequestMethod.PUT, path = "/users/{userId}")
-    public ResponseEntity<UserResource> getUserById(@PathVariable int userId,
-                                                    @RequestBody UserResource userResource) {
+    public ResponseEntity<UserResource> changeUserById(@PathVariable int userId,
+                                                       @RequestBody UserResource userResource) {
         User user = userRepository.findOne(userId);
         User newUser = mapperFacade.map(userResource, User.class);
         //TODO: change user
