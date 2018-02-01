@@ -1,5 +1,4 @@
 package com.wew.books.rest;
-
 import com.wew.books.repository.UserRepository;
 import com.wew.books.repository.entities.User;
 import com.wew.books.rest.resources.LoginResource;
@@ -94,7 +93,7 @@ public class UserController {
         return ResponseEntity.ok(userResource);
     }
 
-    @RequestMapping(method = RequestMethod.DELETE, path = "/users/{isbn}")
+    @RequestMapping(method = RequestMethod.DELETE, path = "/users/{userId}")
     public ResponseEntity<UserResource> deleteUserById(@PathVariable int userId) {
         User user = userRepository.findOne(userId);
         userRepository.delete(userId);
