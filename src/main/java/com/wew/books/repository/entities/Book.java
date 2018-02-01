@@ -11,6 +11,7 @@ public class Book {
     private String author;
     private int pages;
     private String returnDate;
+    private boolean available;
 
     public String getIsbn() {
         return isbn;
@@ -50,5 +51,13 @@ public class Book {
 
     public void setReturnDate(String returnDate) {
         this.returnDate = returnDate;
+    }
+
+    public boolean isAvailable() {
+        return available;
+    }
+
+    public void setAvailable(boolean available) {
+        this.available = available;
     }
 }

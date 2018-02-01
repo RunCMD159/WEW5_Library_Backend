@@ -28,7 +28,10 @@ public class BooksController {
             book.setAuthor("Author" + i);
             book.setPages(random.nextInt(1000));
             if (random.nextInt(2) == 1) {
+                book.setAvailable(false);
                 book.setReturnDate(new Date().toString());
+            } else {
+                book.setAvailable(true);
             }
             book.setTitle("Book" + i);
             bookRepository.save(book);
@@ -59,7 +62,7 @@ public class BooksController {
 
     @RequestMapping(method = RequestMethod.PUT, path = "/books/{isbn}")
     public ResponseEntity<BookResource> changeBook(@PathVariable String isbn,
-                                                    @RequestBody BookResource bookResource) {
+                                                   @RequestBody BookResource bookResource) {
         Book book = bookRepository.findOne(isbn);
         Book newBook = mapperFacade.map(bookResource, Book.class);
         //TODO: change user
