@@ -88,14 +88,8 @@ public class UserController {
     @RequestMapping(method = RequestMethod.PUT, path = "/users/{userId}")
     public ResponseEntity<UserResource> changeUserById(@PathVariable int userId,
                                                        @RequestBody UserResource userResource) {
-        User usertToUpdate = userRepository.findOne(userId);
-         usertToUpdate.setBitcoinWalletPrivateKey(userResource.getBitcoinWalletPrivateKey());
-         usertToUpdate.setEmail(userResource.getEmail());
-         usertToUpdate.setFirstname(userResource.getEmail());
-         usertToUpdate.setLastname(userResource.getLastname());
-         usertToUpdate.setPassword(userResource.getPassword());
-         usertToUpdate.setRole(userResource.getRole());                                                 
-        userRepository.save(usertToUpdate);
+        User userToUpdate = mapperFacade.map(userResource,User.class) ;                                             
+        userRepository.save(userToUpdate);
         return ResponseEntity.ok(userResource);
     }
 
